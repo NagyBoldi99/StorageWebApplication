@@ -46,8 +46,14 @@
             <ul>
                 @foreach (var storage in Model.Storages)
                 {
-                    var ownerIdDisplay = storage.OwnerId == null ? "Nincs hozzárendelt tulajdonos" : storage.OwnerId.ToString();
-                    <li>@storage.Sname (ID: @ownerIdDisplay)</li>
+                    <li>
+                        @storage.Sname (ID: @storage.Sid)
+                        <ul>
+                            <li>Leírás: @storage.Sdescription</li>
+                            <li>Terület: @storage.Sarea</li>
+                            <li>Tulajdonos ID: @((storage.OwnerId.HasValue) ? storage.OwnerId.Value.ToString() : "N/A")</li>
+                        </ul>
+                    </li>
                 }
             </ul>
         </div>

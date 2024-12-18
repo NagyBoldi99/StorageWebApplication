@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 
 namespace StorageWebApplication.Pages
 {
@@ -18,7 +19,7 @@ namespace StorageWebApplication.Pages
             _httpClient.BaseAddress = new Uri("https://localhost:7102/api/storage/");
         }
 
-        public List<StorageDto> Storages { get; set; } = new List<StorageDto>();
+        public List<Storage> Storages { get; set; } = new List<Storage>();
         public string Message { get; set; }
 
         public async Task OnGetAsync()
@@ -28,7 +29,7 @@ namespace StorageWebApplication.Pages
 
         public async Task<IActionResult> OnPostCreateAsync(string Sname, string Sdescription, int Sarea, string OwnerId)
         {
-            var dto = new CreateStorageDto
+            var dto = new CreateStorage
             {
                 Sname = Sname,
                 Sdescription = Sdescription,
@@ -91,7 +92,7 @@ namespace StorageWebApplication.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    Storages = JsonSerializer.Deserialize<List<StorageDto>>(json) ?? new List<StorageDto>();
+                    Storages = JsonSerializer.Deserialize<List<Storage>>(json) ?? new List<Storage>();
                 }
                 else
                 {
@@ -104,16 +105,16 @@ namespace StorageWebApplication.Pages
             }
         }
 
-        public class StorageDto
+        public class Storage
         {
-            public Guid Id { get; set; }
+            public Guid Sid { get; set; }
             public string Sname { get; set; }
             public string Sdescription { get; set; }
             public int Sarea { get; set; }
             public Guid? OwnerId { get; set; }
         }
 
-        public class CreateStorageDto
+        public class CreateStorage
         {
             public string Sname { get; set; }
             public string Sdescription { get; set; }
